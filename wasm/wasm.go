@@ -1,14 +1,10 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/emmaly/elephant"
+	_ "github.com/emmaly/elephant/wasm/log"
+	"github.com/emmaly/elephant/wasm/util"
 )
 
 func main() {
-	fmt.Println(elephant.Person{
-		Name: "Fred",
-		Age:  12,
-	})
+	util.WaitUntilUnload()
 }
