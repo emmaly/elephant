@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Elephant</title>
+    </head>
+    <body>
+        <script src="wasm_exec.js"></script><!-- source: https://github.com/golang/go/blob/master/misc/wasm/wasm_exec.js -->
+        <script>
+            if (!WebAssembly.instantiateStreaming) { // polyfill
+                WebAssembly.instantiateStreaming = async (resp, importObject) => {
+                    const source = await (await resp).arrayBuffer();
+                    return await WebAssembly.instantiate(source, importObject);
+                };
+            }
+
+            const go = new Go();
+
+            let mod, inst;
+
+            WebAssembly.instantiateStreaming(fetch("elephant.wasm"), go.importObject).then(async (result) => {
+                mod = result.module;
+                inst = result.instance;
+                await go.run(inst);
+            });
+        </script>
+    </body>
+</html>
